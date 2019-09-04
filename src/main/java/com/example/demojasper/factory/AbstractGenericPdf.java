@@ -11,8 +11,11 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.example.demojasper.util.Constantes;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -24,26 +27,40 @@ import org.springframework.http.MediaType;
  */
 public abstract class AbstractGenericPdf{
    
-    public String key;
+    private String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
     
-    public byte[] generarPDF(HttpServletResponse response, AmazonS3 s3client, String bucket, Map<String, Object> map) throws Exception {
-
-        byte[] returnObject;
-
-        //get file from S3
-        S3Object s3Object = s3client.getObject(new GetObjectRequest(bucket, key));
-        InputStream reporteJasper = s3Object.getObjectContent();
-        JasperPrint jasperPrint = JasperFillManager.fillReport(reporteJasper, map, new JREmptyDataSource());
-        returnObject = JasperExportManager.exportReportToPdf(jasperPrint);
-
-        response.setContentType(MediaType.APPLICATION_PDF_VALUE);
-        response.setHeader("Content-Disposition", "filename=archivo.pdf");
-        response.setHeader("Correcto", "OK");
-        response.setHeader("Formato", Constantes.FORMATO_TEST);
-        response.setStatus(200);
-
-        return returnObject;
-
+    
+    
+    public byte[] generarPDF(HttpServletResponse response, AmazonS3 s3client, String bucket, Map<String, Object> map){
+        byte[] returnObject = null;
+        try {
+            
+            
+            //get file from S3
+            S3Object s3Object = s3client.getObject(new GetObjectRequest(bucket, key));
+            InputStream reporteJasper = s3Object.getObjectContent();
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporteJasper, map, new JREmptyDataSource());
+            returnObject = JasperExportManager.exportReportToPdf(jasperPrint);
+            
+            response.setContentType(MediaType.APPLICATION_PDF_VALUE);
+            response.setHeader("Content-Disposition", "filename=archivo.pdf");
+            response.setHeader("Correcto", "OK");
+            response.setHeader("Formato", Constantes.FORMATO_TEST);
+            response.setStatus(200);
+            
+           
+        } catch (JRException ex) {
+            Logger.getLogger(AbstractGenericPdf.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         return returnObject;
     }
     
 }

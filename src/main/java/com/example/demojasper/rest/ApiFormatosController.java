@@ -8,15 +8,17 @@ package com.example.demojasper.rest;
 import com.amazonaws.services.s3.AmazonS3;
 import com.example.demojasper.factory.FactoryFormat;
 import com.example.demojasper.model.DataWrapper;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +36,7 @@ public class ApiFormatosController {
     private String bucket;
     @Autowired
     private FactoryFormat factoryFormat;
+
     /**
      * Metodo para generar un PDF usando un archivo de JasperReports y un modelo
      * de data
@@ -43,17 +46,18 @@ public class ApiFormatosController {
      * @param request
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/getPDF", produces = "application/pdf")
+    @PostMapping(value = "/getPDF", produces = "application/pdf")
     @ResponseBody
     @CrossOrigin
-    public ResponseEntity<?> getPDF(@RequestBody DataWrapper dataWrapper, HttpServletResponse response, HttpServletRequest request) throws Exception {
+    public ResponseEntity getPDF(@RequestBody DataWrapper dataWrapper, HttpServletResponse response, HttpServletRequest request) {
         try {
-            
             byte[] responseData = factoryFormat.createFormat(response, s3client, bucket, dataWrapper);
             return ResponseEntity.ok(responseData);
-        } catch (Exception e) {
-            throw e;
+        } catch (Exception ex) {
+            Logger.getLogger(ApiFormatosController.class.getName()).log(Level.SEVERE, null, ex);
+            return ResponseEntity.badRequest().build();
         }
+
     }
 
 }

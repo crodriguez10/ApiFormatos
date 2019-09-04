@@ -11,6 +11,10 @@ package com.example.demojasper.util;
  */
 public class ResourcePath {
     
+    private ResourcePath(){
+        throw new IllegalStateException("Utility class");
+    }
+    
     public static final String KEY_TEST = "test.jasper";
     public static final String KEY_COMPANY = "company.jasper";
 }

@@ -11,5 +11,8 @@ package com.example.demojasper.util;
  */
 public class Constantes {
     
+    private Constantes(){
+        throw new IllegalStateException("Utility class");
+    }
     public static final String FORMATO_TEST = "Formato test 1";
 }

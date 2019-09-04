@@ -7,7 +7,6 @@ package com.example.demojasper.adapter.imp;
 
 import com.example.demojasper.adapter.DataMapAdapter;
 import com.example.demojasper.model.Person;
-import com.example.demojasper.util.Parametros;
 import com.example.demojasper.util.ResourcePath;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,11 +20,11 @@ public class PersonMapAdapterImpl extends Person implements DataMapAdapter{
     @Override
     public Map<String, Object> generarDataMap() {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put(Parametros.NOMBRE_VALUE, this.getNombre());
-        parameters.put(Parametros.APELLIDO_VALUE, this.getApellido());
-        parameters.put(Parametros.EDAD_VALUE, this.getEdad());
-        parameters.put(Parametros.CARGO_VALUE, this.getCargo());
-        parameters.put(Parametros.PROFESION_VALUE, this.getProfesion());
+        parameters.put("nombre", this.getNombre());
+        parameters.put("apellido", this.getApellido());
+        parameters.put("edad", this.getEdad());
+        parameters.put("cargo", this.getCargo());
+        parameters.put("profesion", this.getProfesion());
 
         return parameters;
     }

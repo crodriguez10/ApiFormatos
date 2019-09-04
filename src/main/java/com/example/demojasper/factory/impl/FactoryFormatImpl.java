@@ -13,6 +13,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import com.example.demojasper.factory.FactoryFormat;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,11 +34,11 @@ public class FactoryFormatImpl extends AbstractGenericPdf implements FactoryForm
             ObjectMapper om = new ObjectMapper();
             
             DataMapAdapter dataMapAdapter = (DataMapAdapter) om.readValue(dataWrapper.getDataObjeto(), Class.forName(dataWrapper.getIdClase()));
-            this.key = dataMapAdapter.getkeyResource();
+            this.setKey(dataMapAdapter.getkeyResource());
             responsePdf = generarPDF(response, s3client, bucket, dataMapAdapter.generarDataMap());
             
-        } catch (Exception ex) {
-            System.out.println("Error createFormat: "+ex);
+        } catch (ClassNotFoundException | IOException ex) {
+            Logger.getLogger(FactoryFormatImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return responsePdf;
