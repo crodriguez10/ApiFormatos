@@ -26,6 +26,10 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import com.example.demojasper.factory.FactoryFormat;
+import com.example.demojasper.factory.impl.FactoryFormatGenericImpl;
+import com.example.demojasper.model.DataWrapperGeneric;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -72,13 +76,31 @@ public class NewEmptyJUnitTest extends Mockito{
     }
     
     @Test
-    public void generaTePdfCompany(){
+    public void generatePdfCompany(){
         dataWrapper.setDataObjeto("{\"razonSocial\":\"Pragma\",\"direccion\":\"Avenida pasoancho carrera 80 local 401\",\"numeroEmpleados\":\"27\",\"nit\":\"8951222\"}");
         dataWrapper.setIdClase("com.example.demojasper.adapter.imp.CompanyMapAdapterImpl");
         
         FactoryFormat factory = new FactoryFormatImpl();
         byte[] responseData = factory.createFormat(response, s3client, bucket, dataWrapper);
         
+        assertTrue("File created", responseData.length > 0);
+    }
+    
+    @Test
+    public void generaTePdfGeneric(){
+        DataWrapperGeneric dataWrapperGeneric = new DataWrapperGeneric();
+        dataWrapperGeneric.setKeyResource("test.jasper");
+        List<DataWrapperGeneric.KeyValue> listKeyValue = new ArrayList<>();
+        listKeyValue.add(new DataWrapperGeneric.KeyValue("nombre", "lionel"));
+        listKeyValue.add(new DataWrapperGeneric.KeyValue("apellido", "messi"));
+        listKeyValue.add(new DataWrapperGeneric.KeyValue("edad", "31"));
+        listKeyValue.add(new DataWrapperGeneric.KeyValue("cargo", "delantero"));
+        listKeyValue.add(new DataWrapperGeneric.KeyValue("profesion", "futbolista"));
+        dataWrapperGeneric.setListKeyValue(listKeyValue);
+        
+        FactoryFormat factory = new FactoryFormatGenericImpl();
+        byte[] responseData = factory.createFormat(response, s3client, bucket, dataWrapperGeneric);
+        System.out.println("size generic: "+responseData.length);
         assertTrue("File created", responseData.length > 0);
     }
     

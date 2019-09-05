@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author cesar.rodriguez
  */
-public interface FactoryFormat{
+public interface FactoryFormat<T>{
     
-    public byte[] createFormat(HttpServletResponse response, AmazonS3 s3client, String bucket, DataWrapper data);
+    public byte[] createFormat(HttpServletResponse response, AmazonS3 s3client, String bucket, T data);
     
 }

@@ -16,13 +16,15 @@ import com.example.demojasper.factory.FactoryFormat;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  *
  * @author cesar.rodriguez
  */
 @Component
-public class FactoryFormatImpl extends AbstractGenericPdf implements FactoryFormat{
+@Qualifier("model")
+public class FactoryFormatImpl extends AbstractGenericPdf implements FactoryFormat<DataWrapper>{
 
     
     @Override
