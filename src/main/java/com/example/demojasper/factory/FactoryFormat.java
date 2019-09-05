@@ -6,7 +6,6 @@
 package com.example.demojasper.factory;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.example.demojasper.model.DataWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 /**

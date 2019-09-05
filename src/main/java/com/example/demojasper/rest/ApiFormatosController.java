@@ -38,10 +38,10 @@ public class ApiFormatosController {
     private String bucket;
     @Autowired
     @Qualifier("model")
-    private FactoryFormat factoryFormat;
+    private FactoryFormat<DataWrapper> factoryFormat;
     @Autowired
     @Qualifier("keyvalue")
-    private FactoryFormat factoryFormatGeneric;
+    private FactoryFormat<DataWrapperGeneric> factoryFormatGeneric;
 
     /**
      * Metodo para generar un PDF usando un archivo de JasperReports y un modelo

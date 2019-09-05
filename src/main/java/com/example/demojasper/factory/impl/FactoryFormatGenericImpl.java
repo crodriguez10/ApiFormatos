@@ -9,7 +9,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.example.demojasper.factory.AbstractGenericPdf;
 import com.example.demojasper.factory.FactoryFormat;
 import com.example.demojasper.model.DataWrapperGeneric;
-import static com.example.demojasper.model.DataWrapperGeneric.KeyValue;
+import com.example.demojasper.model.KeyValue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

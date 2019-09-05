@@ -12,22 +12,16 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.example.demojasper.factory.impl.FactoryFormatImpl;
 import com.example.demojasper.model.DataWrapper;
-import com.example.demojasper.model.Person;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import com.example.demojasper.factory.FactoryFormat;
 import com.example.demojasper.factory.impl.FactoryFormatGenericImpl;
 import com.example.demojasper.model.DataWrapperGeneric;
+import com.example.demojasper.model.KeyValue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +59,7 @@ public class NewEmptyJUnitTest extends Mockito{
             dataWrapper.setDataObjeto("{\"nombre\":\"Cesar\",\"apellido\":\"Rodriguez\",\"edad\":\"27\",\"cargo\":\"Desarrollador\",\"profesion\":\"Ingeniero en sistemas\"}");
             dataWrapper.setIdClase("com.example.demojasper.adapter.imp.PersonMapAdapterImpl");
             
-            FactoryFormat factory = new FactoryFormatImpl();
+            FactoryFormat<DataWrapper> factory = new FactoryFormatImpl();
             byte[] responseData = factory.createFormat(response, s3client, bucket, dataWrapper);
            
             assertTrue("File created", responseData.length > 0);
@@ -80,25 +74,25 @@ public class NewEmptyJUnitTest extends Mockito{
         dataWrapper.setDataObjeto("{\"razonSocial\":\"Pragma\",\"direccion\":\"Avenida pasoancho carrera 80 local 401\",\"numeroEmpleados\":\"27\",\"nit\":\"8951222\"}");
         dataWrapper.setIdClase("com.example.demojasper.adapter.imp.CompanyMapAdapterImpl");
         
-        FactoryFormat factory = new FactoryFormatImpl();
+        FactoryFormat<DataWrapper> factory = new FactoryFormatImpl();
         byte[] responseData = factory.createFormat(response, s3client, bucket, dataWrapper);
         
         assertTrue("File created", responseData.length > 0);
     }
     
     @Test
-    public void generaTePdfGeneric(){
+    public void generatePdfGeneric(){
         DataWrapperGeneric dataWrapperGeneric = new DataWrapperGeneric();
         dataWrapperGeneric.setKeyResource("test.jasper");
-        List<DataWrapperGeneric.KeyValue> listKeyValue = new ArrayList<>();
-        listKeyValue.add(new DataWrapperGeneric.KeyValue("nombre", "lionel"));
-        listKeyValue.add(new DataWrapperGeneric.KeyValue("apellido", "messi"));
-        listKeyValue.add(new DataWrapperGeneric.KeyValue("edad", "31"));
-        listKeyValue.add(new DataWrapperGeneric.KeyValue("cargo", "delantero"));
-        listKeyValue.add(new DataWrapperGeneric.KeyValue("profesion", "futbolista"));
+        List<KeyValue> listKeyValue = new ArrayList<>();
+        listKeyValue.add(new KeyValue("nombre", "lionel"));
+        listKeyValue.add(new KeyValue("apellido", "messi"));
+        listKeyValue.add(new KeyValue("edad", "31"));
+        listKeyValue.add(new KeyValue("cargo", "delantero"));
+        listKeyValue.add(new KeyValue("profesion", "futbolista"));
         dataWrapperGeneric.setListKeyValue(listKeyValue);
         
-        FactoryFormat factory = new FactoryFormatGenericImpl();
+        FactoryFormat<DataWrapperGeneric> factory = new FactoryFormatGenericImpl();
         byte[] responseData = factory.createFormat(response, s3client, bucket, dataWrapperGeneric);
         System.out.println("size generic: "+responseData.length);
         assertTrue("File created", responseData.length > 0);
