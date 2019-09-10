@@ -34,7 +34,7 @@ public class NewEmptyJUnitTest extends Mockito{
     DataWrapper dataWrapper;
     HttpServletResponse response;
     private static final String bucket = "cesar.bucket";
-    BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIATLFGFVK7A36IP353", "raK6u+kfisG0PH1cdTddvRvrYVb3+s4IgirYBmPZ");
+    BasicAWSCredentials awsCreds = new BasicAWSCredentials("acceskey", "secretkey");
     final AmazonS3 s3client = AmazonS3ClientBuilder.standard()
             .withRegion(Regions.US_EAST_2)
             .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
