@@ -30,8 +30,9 @@ public class S3Config {
 
     @Bean
     public AmazonS3 s3client() {
-
+        InstanceProfileCredentialsProvider provider = new InstanceProfileCredentialsProvider(true);
         return  AmazonS3ClientBuilder.standard()
+                .withCredentials(provider)
                 .build();
     }
 }
